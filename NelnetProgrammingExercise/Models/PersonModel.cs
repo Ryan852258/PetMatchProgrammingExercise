@@ -16,11 +16,12 @@ namespace NelnetProgrammingExercise.Models
 
         // Method to calculate a compatability value between person and pet 
         // compatability above zero is a good pet and zero and below is a bad pet
+        // compatability changes by 2^(m-n) where m is the number of propreties in the hierarchy and n is the position of the current property in the hierarchy
         public int CalculateCompatibility(PetModel pet)
         {
             var compatibility = 0;
 
-            // Preferences
+            // Preferences (positives)
             if (PreferredWeightClass == pet.WeightClass)
                 compatibility += 1;
             if (PreferredClassification == pet.Classification)
@@ -28,7 +29,7 @@ namespace NelnetProgrammingExercise.Models
             if (PreferredType == pet.Type)
                 compatibility += 4;
 
-            // Overrides
+            // Overrides (negatives)
             if (WeightClassOverrides != null && Array.Exists(WeightClassOverrides, element => element == pet.WeightClass))
                 compatibility -= 8;
             if (ClassificationOverrides != null && Array.Exists(ClassificationOverrides, element => element == pet.Classification))
