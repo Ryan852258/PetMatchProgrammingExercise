@@ -11,7 +11,6 @@ namespace NelnetProgrammingExercise
         private static PetModel[] Pets;
 
         #region Initialization
-
         private static void SetupObjects()
         {
             People = new PersonModel[]
@@ -110,9 +109,7 @@ namespace NelnetProgrammingExercise
 
         private static string IsGood(int fitness)
         {
-            return fitness > 0
-                ? "good"
-                : "bad";
+            return fitness > 0 ? "good" : "bad";
         }
 
         static void Main(string[] args)
@@ -122,7 +119,7 @@ namespace NelnetProgrammingExercise
             foreach(PersonModel person in People) {
                 Console.WriteLine(string.Format("Pets for {0}:", person.Name));
 
-                var PetsCompatability = person.GetPetsCompatibility(Pets);
+                var PetsCompatability = person.GetCompatibilityForPets(Pets);
                 foreach(KeyValuePair<PetModel,int> petCompatibilityPair in PetsCompatability)
                 {
                     var pet = petCompatibilityPair.Key;

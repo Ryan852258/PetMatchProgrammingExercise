@@ -16,7 +16,6 @@ namespace NelnetProgrammingExercise.Models
 
         // Method to calculate a compatability value between person and pet 
         // compatability above zero is a good pet and zero and below is a bad pet
-        // compatability value range -21 - 6
         public int CalculateCompatibility(PetModel pet)
         {
             var compatibility = 0;
@@ -27,21 +26,21 @@ namespace NelnetProgrammingExercise.Models
             if (PreferredClassification == pet.Classification)
                 compatibility += 2;
             if (PreferredType == pet.Type)
-                compatibility += 3;
+                compatibility += 4;
 
             // Overrides
             if (WeightClassOverrides != null && Array.Exists(WeightClassOverrides, element => element == pet.WeightClass))
-                compatibility -= 6;
-            if (ClassificationOverrides != null && Array.Exists(ClassificationOverrides, element => element == pet.Classification))
-                compatibility -= 7;
-            if (TypeOverrides != null && Array.Exists(TypeOverrides, element => element == pet.Type))
                 compatibility -= 8;
+            if (ClassificationOverrides != null && Array.Exists(ClassificationOverrides, element => element == pet.Classification))
+                compatibility -= 16;
+            if (TypeOverrides != null && Array.Exists(TypeOverrides, element => element == pet.Type))
+                compatibility -= 32;
 
             return compatibility;
         }
 
         // Method to get a sorted List of (Pet, compatibility Value) Key-Value Pairs
-        public List<KeyValuePair<PetModel,int>> GetPetsCompatibility(PetModel[] pets)
+        public List<KeyValuePair<PetModel,int>> GetCompatibilityForPets(PetModel[] pets)
         {
             List<KeyValuePair<PetModel, int>> PetsCompatibility = new List<KeyValuePair<PetModel, int>>();
 
