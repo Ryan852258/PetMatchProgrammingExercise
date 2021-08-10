@@ -9,7 +9,6 @@ namespace NelnetProgrammingExerciseTests
 {
     public class PersonModelTests
     {
-
         [Theory]
         [InlineData(PetType.Betta, PetType.Betta)]
         [InlineData(PetType.Canary, PetType.Canary)]
@@ -307,6 +306,7 @@ namespace NelnetProgrammingExerciseTests
             Assert.Equal(0, person.CalculateCompatibility(pet));
         }
 
+        //Method to generate test data for GetCalculateCompatability method
         public static IEnumerable<object[]> GetCalculateCompatabilityTestData()
         {
             var constantPerson = new PersonModel()
@@ -437,8 +437,10 @@ namespace NelnetProgrammingExerciseTests
 
         [Theory]
         [MemberData(nameof(GetCalculateCompatabilityTestData))]
-        public void CalculateCompatibilityTest(PersonModel person, PetModel pet, int expectedCompatibility) => Assert.Equal(expectedCompatibility, person.CalculateCompatibility(pet));
+        public void CalculateCompatibilityTest(PersonModel person, PetModel pet, int expectedCompatibility) 
+            => Assert.Equal(expectedCompatibility, person.CalculateCompatibility(pet));
 
+        //Method to generate test data for GetCompatibilityForPets method
         public static IEnumerable<object[]> GetCompatibilityForPetsTestData()
         {
             var testPerson1 = new PersonModel()
@@ -614,6 +616,10 @@ namespace NelnetProgrammingExerciseTests
                     testPetSet1[8], 
                     testPetSet1[3], 
                     testPetSet1[2]
+                }, 
+                new PetModel[]{
+                    testPetSet1[0],
+                    testPetSet1[1],
                 }
             };
 
@@ -629,9 +635,13 @@ namespace NelnetProgrammingExerciseTests
                     testPetSet1[0], 
                     testPetSet1[2], 
                     testPetSet1[5], 
-                    testPetSet1 [8], 
+                    testPetSet1[8], 
                     testPetSet1[3], 
                     testPetSet1[4] 
+                },
+                new PetModel[]
+                {
+                    testPetSet1[7]
                 }
             };
 
@@ -650,6 +660,11 @@ namespace NelnetProgrammingExerciseTests
                     testPetSet2[2], 
                     testPetSet2[4], 
                     testPetSet2[8] 
+                },
+                new PetModel[]
+                {
+                    testPetSet2[7],
+                    testPetSet2[1]
                 }
             };
             yield return new object[]
@@ -667,17 +682,32 @@ namespace NelnetProgrammingExerciseTests
                     testPetSet2[4],
                     testPetSet2[5],
                     testPetSet2[0]
+                },
+                new PetModel[]
+                {
+                    testPetSet2[2],
+                    testPetSet2[3],
+                    testPetSet2[7],
+                    testPetSet2[8]
                 }
+
             };
         }
 
         [Theory]
         [MemberData(nameof(GetCompatibilityForPetsTestData))]
-        public void GetCompatibilityForPetsTest(PersonModel person, PetModel[] pets, PetModel[] expectedOrder)
+        public void GetCompatibilityForPetsTest(PersonModel person, PetModel[] pets, PetModel[] expectedOrder, PetModel[] expectedGoodPets)
         {
             List<KeyValuePair<PetModel, int>> petCompatabilityPairs = person.GetCompatibilityForPets(pets);
+
+            //Split pairs into arrays containing only pets
             var sortedPets = petCompatabilityPairs.Select(pair => pair.Key ).ToArray();
+            var goodPets = petCompatabilityPairs.Where(pair => pair.Value > 0).Select(pair => pair.Key).ToArray();
+
+            //Check best to worst order and good pets 
+            Assert.Equal(expectedGoodPets, goodPets);
             Assert.Equal(expectedOrder, sortedPets);
+
         }
 
 
